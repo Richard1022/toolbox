@@ -11,3 +11,33 @@ function unique(array) {
     return Array.from(new Set(array));
 }
 console.log(unique(array));
+
+//2.求数组最大值
+Math.max(...arr)
+
+//3. 数组扁平化
+function flatten(arr) {
+    let result = []
+    for (let i = 0; i < arr.length; i++) {
+        if (Array.isArray(arr[i])) {
+            result = result.concat(arguments.callee(arr[i]))
+        } else {
+            result.push(arr[i])
+        }
+    }
+    return result
+}
+[1, [2, [3, 4]]].toString() // "1,2,3,4"
+// reduce 扁平化
+function flattenByReduce(arr) {
+    return arr.reduce((prev, next) => {
+        return prev.concat(Array.isArray(next) ? flattenByReduce(next) : next)
+    }, [])
+}
+// 展开运算符
+function flattenByExpand(arr) {
+    while (arr.some(item => Array.isArray(item))) {
+        arr = [].concat(...arr);
+    }
+    return arr;
+}
