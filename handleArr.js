@@ -41,3 +41,8 @@ function flattenByExpand(arr) {
     }
     return arr;
 }
+
+// 4. 数组寻找指定索引
+arr.findIndex((item, index, self) => {
+    return item > 0
+})
