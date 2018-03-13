@@ -46,3 +46,15 @@ function flattenByExpand(arr) {
 arr.findIndex((item, index, self) => {
     return item > 0
 })
+
+// 5. 数组随机插入时式乱序
+function shuffle(arr) {
+    // i 为数组长度 递减 0<= 结束循环
+    for (let i = arr.length; i; i--) {
+        // 声明一个 数组的随机索引
+        let j = Math.floor(Math.random() * i)
+        // 通过结构赋值 交换 遍历项和 交换项位置
+        [arr[i], arr[j]] = [arr[j], [arr[i]]]
+    }
+    return arr
+}

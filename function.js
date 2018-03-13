@@ -43,3 +43,60 @@ fn("a")("b", "c") // ["a", "b", "c"]
 // mapDB([1, 2, 3, 4, 5]);
 // mapDB([6, 7, 8, 9, 10]);
 // mapDB([10, 20, 30, 40, 50]);
+
+// 2. 组合函数
+function compose() {
+    // 获取要compose的 函数名数组
+    var args = arguments;
+    // 从右往左执行 获取参数的起始值
+    var start = args.length - 1;
+    // 匿名函数this指向
+    return function () {
+        var i = start;
+        // apply 参数为数组
+        // result 为 右侧第一个函数执行结果
+        var result = args[start].apply(this, arguments);
+        while (i--) {
+            result = args[i].call(this, result)
+        }
+        return result;
+    };
+};
+function hello(x) {
+    return `hello ${x}`
+};
+function toBig(x) {
+    return x.toUpperCase();
+}
+let composeFun = compose(hello, toBig)
+
+// 3. 函数记忆
+// description: 把上次计算的结果缓存起来,当下次调用时,如果遇到相同参数,就直接返回缓存中的数据
+function memorize(fun) {
+    // 声明一个闭包变量 缓存数据
+    let cache = {};
+    return function () {
+        // 声明一个唯一的key标识
+        let key = arguments.length + Array.prototype.join.call(arguments, ',');
+        // 如果key 是cache的属性,直接返回缓存中的数据
+        if (key in cache) {
+            return cache[key];
+        } else {
+            // 执行该函数 并且存入缓存
+            return cache[key] = f.apply(this, arguments)
+        }
+    }
+}
+// 参数为对象版
+// var memoize = function (func, hasher) {
+//     var memoize = function (key) {
+//         var cache = memoize.cache;
+//         var address = '' + (hasher ? hasher.apply(this, arguments) : key);
+//         if (!cache[address]) {
+//             cache[address] = func.apply(this, arguments);
+//         }
+//         return cache[address];
+//     };
+//     memoize.cache = {};
+//     return memoize;
+// };
