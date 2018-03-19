@@ -83,7 +83,7 @@ function memorize(fun) {
             return cache[key];
         } else {
             // 执行该函数 并且存入缓存
-            return cache[key] = f.apply(this, arguments)
+            return cache[key] = fun.apply(this, arguments)
         }
     }
 }

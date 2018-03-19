@@ -58,3 +58,15 @@ function shuffle(arr) {
     }
     return arr
 }
+
+// 6. 处理数组中对象指定属性去重
+function propUnique(arr, prop) {
+    // 创建一个哈希索引,若对象中的属性已存在跳过
+    var hash = {};
+    let ret = arr.reduce(function (item, next) {
+        // 字符串作为属性参数一定要用[]包裹
+        hash[next[prop]] ? '' : hash[next[prop]] = true && item.push(next);
+        return item
+    }, [])
+    return ret
+}
