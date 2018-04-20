@@ -60,3 +60,34 @@ function isEmptyObject(obj) {
 function isWindow(obj) {
     return obj != null && obj === obj.window;
 }
+
+// 6.终极继承
+function inherit(child, parent) {
+    // 继承父类的原型
+    const parentPrototype = Object.create(parent.prototype)
+    // 将父类原型和子类原型合并，并赋值给子类的原型
+    child.prototype = Object.assign(parentPrototype, child.prototype)
+    // 重写被污染的子类的constructor
+    parentPrototype.constructor = child
+}
+// GithubUser, 父类
+function GithubUser(username, password) {
+    let _password = password
+    this.username = username
+    GithubUser.prototype.login = function () {
+        console.log(this.username + '要登录Github，密码是' + _password)
+    }
+}
+// GithubUser, 子类
+function JuejinUser(username, password) {
+    GithubUser.call(this, username, password) // 继承属性
+    this.articles = 3 // 文章数量
+}
+// 实现原型上的方法
+inherit(JuejinUser, GithubUser)
+// 在原型上添加新方法
+JuejinUser.prototype.readArticle = function () {
+    console.log('Read article')
+}
+const juejinUser1 = new JuejinUser('ulivz', 'xxx')
+

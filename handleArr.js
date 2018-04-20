@@ -70,3 +70,48 @@ function propUnique(arr, prop) {
     }, [])
     return ret
 }
+
+// 7. 数组对象指定属性值排序
+let testData = [
+    {
+        sign: 1,
+        size: {
+            size_code: "M",
+            size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
+            size_name: "M",
+            order: 10
+        },
+    },
+    {
+        sign: 0,
+        size: {
+            size_code: "S",
+            size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
+            size_name: "S",
+            order: 5
+        },
+    },
+    {
+        sign: 2,
+        size: {
+            size_code: "L",
+            size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
+            size_name: "L",
+            order: 15
+        },
+    }
+]
+
+let handelData = [...testData]
+handelData.forEach((item, index, self) => {
+    self[index].order = item.size.order
+})
+
+function compare(prop) {
+    return function (a, b) {
+        let valueA = a[prop];
+        let valueB = b[prop];
+        return valueA - valueB;
+    }
+}
+console.log(handelData.sort(compare('order')));
