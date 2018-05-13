@@ -1,5 +1,6 @@
-// 1. 柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
+import { type } from './common';
 
+// 1. 柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
 function curry(fn, args) {
     var length = fn.length;
     args = args || [];
@@ -72,18 +73,19 @@ let composeFun = compose(hello, toBig)
 
 // 3. 函数记忆
 // description: 把上次计算的结果缓存起来,当下次调用时,如果遇到相同参数,就直接返回缓存中的数据
-function memorize(fun) {
-    // 声明一个闭包变量 缓存数据
+function memory(func) {
+    if (!type(func) === 'function') {
+        throw 'arg is not function'
+    }
+    // 声明一个闭包缓存函数执行结果
     let cache = {};
     return function () {
-        // 声明一个唯一的key标识
-        let key = arguments.length + Array.prototype.join.call(arguments, ',');
-        // 如果key 是cache的属性,直接返回缓存中的数据
-        if (key in cache) {
+        // arguments 为对象 长度一样 则需要重写key 规则
+        let key = arguments.length + Array.prototype.join.call(arguments, ',')
+        if (cache[key]) {
             return cache[key];
         } else {
-            // 执行该函数 并且存入缓存
-            return cache[key] = fun.apply(this, arguments)
+            return cache[key] = func.apply(this, arguments);
         }
     }
 }

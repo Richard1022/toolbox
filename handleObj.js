@@ -34,20 +34,6 @@ function shadowCopy(obj) {
 }
 
 
-// 3.类型判断
-const classType = {};
-// 生成一个classType的映射
-'Boolean Number String Function Array Date Regexp Object Error Null undefined '.split(' ').map((item) => {
-    classType[`[object ${item}]`] = item.toLowerCase();
-});
-
-function type(obj) {
-    return typeof obj === 'object' || typeof obj === 'function' ?
-        classType[Object.prototype.toString.call(obj)] || 'object' :
-        typeof obj;
-}
-// console.log(type(new Date())) // 'date'
-
 // 4.判断是否是空对象 只针对{}, 特殊情况请用type函数过滤
 function isEmptyObject(obj) {
     for (let name in obj) {
