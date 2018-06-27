@@ -1,6 +1,9 @@
-import { type } from './common';
-
-// 1. 柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
+/**
+ * 1.(函数柯里化) 是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
+ * @param {function} fn 需要柯里化的函数
+ * @param {arg} args 函数参数
+ * @return {function} 柯里化之后的函数
+ */
 function curry(fn, args) {
     var length = fn.length;
     args = args || [];
@@ -13,12 +16,12 @@ function curry(fn, args) {
         }
         if (_args.length < length) {
             return curry.call(this, fn, _args);
-        }
-        else {
+        } else {
             return fn.apply(this, _args);
         }
     }
 }
+
 function curry(fn) {
     var args = Array.prototype.slice.call(arguments, 1);
     return function () {
@@ -27,34 +30,24 @@ function curry(fn) {
         return fn.apply(null, finalArgs);
     }
 }
+/**
+ * @example 
+ * var fn = curry(function (a, b, c) {
+ *   console.log([a, b, c]);
+ *  });
+ *  fn("a", "b", "c") // ["a", "b", "c"]
+ *  fn("a", "b")("c") // ["a", "b", "c"]
+ *  fn("a")("b")("c") // ["a", "b", "c"]
+ *  fn("a")("b", "c") // ["a", "b", "c"]
+ */
 
-var fn = curry(function (a, b, c) {
-    console.log([a, b, c]);
-});
-fn("a", "b", "c") // ["a", "b", "c"]
-fn("a", "b")("c") // ["a", "b", "c"]
-fn("a")("b")("c") // ["a", "b", "c"]
-fn("a")("b", "c") // ["a", "b", "c"]
+// =============================================================================================================================================
 
-// function square(i) {
-//     return i * i;
-// }
-// function dubble(i) {
-//     return i *= 2;
-// }
-// function map(handeler, list) {
-//     return list.map(handeler);
-// }
-// var mapSQ = curry(map, square);
-// mapSQ([1, 2, 3, 4, 5]);
-// mapSQ([6, 7, 8, 9, 10]);
-// mapSQ([10, 20, 30, 40, 50]);
-// var mapDB = curry(map, dubble);
-// mapDB([1, 2, 3, 4, 5]);
-// mapDB([6, 7, 8, 9, 10]);
-// mapDB([10, 20, 30, 40, 50]);
-
-// 2. 组合函数
+/**
+ * 2.(组合函数)
+ * @param {function} 需要组合的函数
+ * @return {function} 组合完成之后的函数
+ */
 function compose() {
     // 获取要compose的 函数名数组
     var args = arguments;
@@ -72,20 +65,27 @@ function compose() {
         return result;
     };
 };
-function hello(x) {
-    return `hello ${x}`
-};
-function toBig(x) {
-    return x.toUpperCase();
-}
-let composeFun = compose(hello, toBig)
 
-// 3. 函数记忆
-// description: 把上次计算的结果缓存起来,当下次调用时,如果遇到相同参数,就直接返回缓存中的数据
+/**
+ * @example
+ * function hello(x) {
+ * return `hello ${x}`
+ * };
+ * 
+ * function toBig(x) {
+ *     return x.toUpperCase();
+ * }
+ * let composeFun = compose(hello, toBig)
+ */
+
+//==========================================================================================================================================
+
+/**
+ * 3.(函数记忆)  把上次计算的结果缓存起来,当下次调用时,如果遇到相同参数,就直接返回缓存中的数据
+ * @param {function} func 
+ * @return {function} 拥有缓存的函数
+ */
 function memory(func) {
-    if (!type(func) === 'function') {
-        throw 'arg is not function'
-    }
     // 声明一个闭包缓存函数执行结果
     let cache = {};
     return function () {
@@ -98,16 +98,30 @@ function memory(func) {
         }
     }
 }
+
 // 参数为对象版
-// var memoize = function (func, hasher) {
-//     var memoize = function (key) {
-//         var cache = memoize.cache;
-//         var address = '' + (hasher ? hasher.apply(this, arguments) : key);
-//         if (!cache[address]) {
-//             cache[address] = func.apply(this, arguments);
-//         }
-//         return cache[address];
-//     };
-//     memoize.cache = {};
-//     return memoize;
-// };
+var memoize = function (func, hasher) {
+    var memoize = function (key) {
+        var cache = memoize.cache;
+        var address = '' + (hasher ? hasher.apply(this, arguments) : key);
+        if (!cache[address]) {
+            cache[address] = func.apply(this, arguments);
+        }
+        return cache[address];
+    };
+    memoize.cache = {};
+    return memoize;
+};
+
+// =========================================================================================================================================
+
+/**
+ * 4.(函数强制参数)
+ * @example (a=required(),b=required)=>{a+b};
+ */
+const required = () => {
+    throw new Error(`Missing parameter`)
+}
+
+//=========================================================================================================================================
+

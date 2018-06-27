@@ -1,30 +1,35 @@
-import { required, isIterator } from './common';
-
-// 1.数组去重
-var array = [1, 2, 1, 1, '1'];
-/**        
-        通过 indexOf首次出现的位置,实现去重
-        function unique(array) {
-            var res = array.filter(function (item, index, array) {
-                return array.indexOf(item) === index; 
-            })
-            return res;
-        }
-**/
-function unique(array = required('array')) {
-    if (!isIterator(array)) {
-        throw new Error('argument is not a iteartor')
-    }
-    // Set 函数可以接受一个数组（或者具有 iterable 接口的其他数据结构）作为参数，用来初始化。
-    return Array.from(new Set(array));
+/**
+ * 1.(数组去重)
+ * @param {array} array 要去重的数组
+ */
+// 通过 indexOf首次出现的位置, 实现去重
+function unique(array) {
+    var res = array.filter(function (item, index, array) {
+        return array.indexOf(item) === index;
+    })
+    return res;
 }
-console.log(unique(array));
 
-//2.求数组最大值
+function unique(array) {
+    return Array.from(new Set(array))
+}
+
+// ===========================================================================================================================
+
+/**
+ * 2.(求数组最大值)
+ * @param {array} arr 求最大值数组
+ */
 Math.max(...arr)
 
-//3. 数组扁平化
-function flatten(arr = required('arr')) {
+// ===========================================================================================================================
+
+/**
+ * 3.(数组扁平化)
+ * @param {array} arr 需要扁平化的数组
+ * @return {array} 扁平化之后的数组
+ */
+function flatten(arr) {
     if (!Array.isArray(arr)) {
         throw `arg is not Array`
     }
@@ -65,6 +70,7 @@ arr.findIndex((item, index, self) => {
 
 // 5. 数组随机插入时式乱序
 let arr = [1, 2, 3, 4, 5, 6, 7, 8];
+
 function shuffle(arr = required('arr')) {
     if (!Array.isArray(arr)) {
         throw `${arr} is not array`
@@ -92,8 +98,7 @@ function propUnique(arr = required('arr'), prop = required('prop')) {
 }
 
 // 7. 数组对象指定属性值排序
-let testData = [
-    {
+let testData = [{
         sign: 1,
         size: {
             size_code: "M",
