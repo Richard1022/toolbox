@@ -46,12 +46,10 @@ function flatten(arr) {
 // reduce 扁平化
 function flattenByReduce(arr) {
     if (!Array.isArray(arr)) {
-        throw `arg is not Array`
+      throw new Error('arg is not Array');
     }
-    return arr.reduce((prev, next) => {
-        return prev.concat(Array.isArray(next) ? flattenByReduce(next) : next)
-    }, [])
-}
+    return arr.reduce((prev, next) => prev.concat(Array.isArray(next) ? flattenByReduce(next) : next), []);
+  }
 // 展开运算符
 function flattenByExpand(arr) {
     if (!Array.isArray(arr)) {
