@@ -137,4 +137,5 @@ function compare(prop) {
         return valueA - valueB;
     }
 }
+handelData.sort((() => (a, b) => a.order - b.order)());
 console.log(handelData.sort(compare('order')));
