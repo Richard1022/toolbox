@@ -8,7 +8,7 @@
  * @param {number} type 处理方式
  * @return {string} 去除空格后的字符串
  */
-function trim(str, type) {
+export function trim(str, type) {
     switch (type) {
         case 1:
             return str.replace(/\s+/g, "");
@@ -23,7 +23,6 @@ function trim(str, type) {
     }
 }
 
-//================================================================================================================================================
 
 /**
  * 2.(大小写转换)
@@ -36,7 +35,7 @@ function trim(str, type) {
  * @param {number} type 处理方式
  * @return {string} 处理完成的字符串
  */
-function changeCase(str, type) {
+export function changeCase(str, type) {
     switch (type) {
         case 1:
             return str.replace(/^(\w)(\w+)/, function (v, v1, v2) {
@@ -58,5 +57,3 @@ function changeCase(str, type) {
             return str;
     }
 }
-
-//==================================================================================================================================================

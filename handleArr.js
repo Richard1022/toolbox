@@ -3,14 +3,14 @@
  * @param {array} array 要去重的数组
  */
 // 通过 indexOf首次出现的位置, 实现去重
-function unique(array) {
+export function unique(array) {
     var res = array.filter(function (item, index, array) {
         return array.indexOf(item) === index;
     })
     return res;
 }
 
-function unique(array) {
+export function unique(array) {
     return Array.from(new Set(array))
 }
 
@@ -29,7 +29,7 @@ Math.max(...arr)
  * @param {array} arr 需要扁平化的数组
  * @return {array} 扁平化之后的数组
  */
-function flatten(arr) {
+export function flatten(arr) {
     if (!Array.isArray(arr)) {
         throw `arg is not Array`
     }
@@ -44,14 +44,14 @@ function flatten(arr) {
     return result
 }
 // reduce 扁平化
-function flattenByReduce(arr) {
+export function flattenByReduce(arr) {
     if (!Array.isArray(arr)) {
-      throw new Error('arg is not Array');
+        throw new Error('arg is not Array');
     }
     return arr.reduce((prev, next) => prev.concat(Array.isArray(next) ? flattenByReduce(next) : next), []);
-  }
+}
 // 展开运算符
-function flattenByExpand(arr) {
+export function flattenByExpand(arr) {
     if (!Array.isArray(arr)) {
         throw `arg is not Array`
     }
@@ -61,6 +61,7 @@ function flattenByExpand(arr) {
     return arr;
 }
 
+
 // 4. 数组寻找指定索引
 arr.findIndex((item, index, self) => {
     return item > 0
@@ -69,7 +70,7 @@ arr.findIndex((item, index, self) => {
 // 5. 数组随机插入时式乱序
 let arr = [1, 2, 3, 4, 5, 6, 7, 8];
 
-function shuffle(arr = required('arr')) {
+export function shuffle(arr = required('arr')) {
     if (!Array.isArray(arr)) {
         throw `${arr} is not array`
     }
@@ -80,7 +81,12 @@ function shuffle(arr = required('arr')) {
     return arr;
 }
 
-// 6. 处理数组中对象指定属性去重
+
+/**
+ * 6. 处理数组中对象指定属性去重
+ * @param {array} arr 需要去重的数组
+ * @param {string} prop 指定属性的key
+ */
 function propUnique(arr = required('arr'), prop = required('prop')) {
     if (!Array.isArray(arr)) {
         throw `${arr} is not Array`;
@@ -97,32 +103,32 @@ function propUnique(arr = required('arr'), prop = required('prop')) {
 
 // 7. 数组对象指定属性值排序
 let testData = [{
-        sign: 1,
-        size: {
-            size_code: "M",
-            size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
-            size_name: "M",
-            order: 10
-        },
+    sign: 1,
+    size: {
+        size_code: "M",
+        size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
+        size_name: "M",
+        order: 10
     },
-    {
-        sign: 0,
-        size: {
-            size_code: "S",
-            size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
-            size_name: "S",
-            order: 5
-        },
+},
+{
+    sign: 0,
+    size: {
+        size_code: "S",
+        size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
+        size_name: "S",
+        order: 5
     },
-    {
-        sign: 2,
-        size: {
-            size_code: "L",
-            size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
-            size_name: "L",
-            order: 15
-        },
-    }
+},
+{
+    sign: 2,
+    size: {
+        size_code: "L",
+        size_id: "8672b0f7-1892-4743-8fb9-8a341649de9a",
+        size_name: "L",
+        order: 15
+    },
+}
 ]
 
 let handelData = [...testData];
@@ -139,3 +145,19 @@ function compare(prop) {
 }
 handelData.sort((() => (a, b) => a.order - b.order)());
 console.log(handelData.sort(compare('order')));
+
+/**
+ * 8.(数组元素位置交换)
+ * @param {Array} arr 要操作的数组
+ * @param {Number} index 交换前原始索引
+ * @param {Number} changeIndex 要交换的索引
+ */
+export function exchangeArrayItem(arr = required(), index = required(), changeIndex = required()) {
+    if (type(arr) !== 'array') {
+        throw new Error('The arr parameter must be an array type');
+    }
+    const copyArr = deepCloneJson(arr);
+    [copyArr[index], copyArr[changeIndex]] = [copyArr[changeIndex], copyArr[index]];
+    return copyArr;
+}
+
