@@ -57,3 +57,21 @@ export function changeCase(str, type) {
             return str;
     }
 }
+
+/**
+ * 3. code指定长度末尾截取，否则补零
+ * @param {number} code 需要处理的字符串活数字
+ * @param {number} len 长度控制
+ * @return {string} 处理之后的字符串
+ */
+export function handleCode(code, len) {
+    let ret = String(code);
+    if (ret.length > len) {
+      ret = ret.slice(-len);
+    } else if (ret.length < len) {
+      while (ret.length < len) {
+        ret = `0${ret}`;
+      }
+    }
+    return ret;
+  }

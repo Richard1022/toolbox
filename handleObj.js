@@ -88,3 +88,28 @@ Richard.prototype = Object.create(Person.prototype, {
         writable: true
     }
 });
+
+
+/**
+ * 删除对象空值属性
+ * @param {object} obj 要删除空值的对象
+ */
+export function dealElement(obj) {
+    var param = {}
+    if (obj === null || obj === undefined || obj === '') return param
+    for (var key in obj) {
+      if (obj[key] !== null && obj[key] !== undefined && obj[key] !== '') {
+        param[key] = obj[key]
+      }
+    }
+    return param
+  }
+
+  /**
+ * 10.判断对象属性是否有空值
+ * @param {object} obj 需要判断的对象
+ * @returns {boolean} 是否有空值
+ */
+export function propHasEmpty(obj) {
+    return Object.values(obj).some(item => (item === ''))
+  }

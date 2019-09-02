@@ -24,7 +24,7 @@ export const isIterator = (obj) => {
  * @return {string} 类型字符串
  * @example  const toString = Object.prototype.toString // toString.call(obj)
  */
-export function type(obj) {
+export function type (obj) {
     const classType = {};
     // 生成一个classType的映射
     'Boolean Number String Function Array Date Regexp Object Error Null undefined '.split(' ').map((item) => {
@@ -43,7 +43,7 @@ export function type(obj) {
  * @return void
  */
 
-export function throttle(method, context) {
+export function throttle (method, context) {
     clearTimeout(method.tId);
     method.tId = setTimeout(function () {
         method.call(context);
@@ -66,8 +66,8 @@ export function throttle(method, context) {
 *6.(创建guid)
 * @returns GUID是一种由算法生成的二进制长度为128位的数字标识符
 */
-export function createGuid() {
-    function S4() {
+export function createGuid () {
+    function S4 () {
         return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     }
     return (`${S4() + S4()}-${S4()}-${S4()}-${S4()}-${S4()}${S4()}${S4()}`);
@@ -78,7 +78,7 @@ export function createGuid() {
  * 7.(手机号正则验证)
  * @param {string} str 测试的手机号字符串
  */
-export function isPhoneAvailable(str) {
+export function isPhoneAvailable (str) {
     const reg = /^[1][3,4,5,7,8][0-9]{9}$/;
     if (!reg.test(str)) {
         return false;
@@ -94,7 +94,7 @@ export function isPhoneAvailable(str) {
 * @param {object} payload query 对象参数
 * @returns {string} 拼接参数之后的queryurl
 */
-export function joinQueryStr(url = required(), payload) {
+export function joinQueryStr (url = required(), payload) {
     if (type(url) !== 'string') {
         throw new Error(`url params must be stringtype ${url} is ${type(url)}`);
     }
@@ -112,7 +112,7 @@ export function joinQueryStr(url = required(), payload) {
 * @param {string} format yyyy/MM/dd hh:mm:ss 需要format的格式
 * @returns {string} 格式化之后的时间字符串
 */
-export function formatTime(time, format) {
+export function formatTime (time, format) {
     const dateTime = new Date(time);
     const o = {
         'M+': dateTime.getMonth() + 1, // month
@@ -143,7 +143,7 @@ export function formatTime(time, format) {
  * @param {object} obj 需要判断的对象
  * @returns {boolean} 是否有空值
  */
-export function propIsEmpty(obj) {
+export function propIsEmpty (obj) {
     return Object.values(obj).some(item => (item === ''));
 }
 
@@ -154,21 +154,67 @@ export function propIsEmpty(obj) {
  * @param {string} prop 属性名字符串
  * @param {值类型} value 属性值
  */
-export function getItemWithSelect(arr, prop, value) {
+export function getItemWithSelect (arr, prop, value) {
     const copyArr = deepCloneJson(arr);
     return copyArr.find(i => i[prop] === value);
-  }
+}
 
 
-  /**
- * 12. 根据对象数组属性的值来分割数组
- * @param {array} arr  需要分割的数组
- * @param {string} prop  分割的属性值
- * @return {object} 分割数组对象 key 为 去重后的属性值  值为当前chunk数组
- */
-export function cutArrWithSameProps(arr = required(), prop = required()) {
+/**
+* 12. 根据对象数组属性的值来分割数组
+* @param {array} arr  需要分割的数组
+* @param {string} prop  分割的属性值
+* @return {object} 分割数组对象 key 为 去重后的属性值  值为当前chunk数组
+*/
+export function cutArrWithSameProps (arr = required(), prop = required()) {
     return arr.reduce((init, next) => {
-      init[next[prop]] ? init[next[prop]].push(next) : init[next[prop]] = [next];
-      return init;
+        init[next[prop]] ? init[next[prop]].push(next) : init[next[prop]] = [next];
+        return init;
     }, {});
+}
+
+/**
+* query参数转换
+* @param {object} data 需要转变成query参数的对象
+* @param {Boolean} isPrefix 是否拼接?前缀
+*/
+export function queryParams (data = required(), isPrefix) {
+    isPrefix = isPrefix || false
+    const prefix = isPrefix ? '?' : ''
+    const _result = []
+    for (const key in data) {
+        const value = data[key]
+        // 去掉为空的参数
+        if (['', undefined, null].includes(value)) {
+            continue
+        }
+        if (value.constructor === Array) {
+            value.forEach(_value => {
+                _result.push(encodeURIComponent(key) + '[]=' + encodeURIComponent(_value))
+            })
+        } else {
+            _result.push(encodeURIComponent(key) + '=' + encodeURIComponent(value))
+        }
+    }
+
+    return _result.length ? prefix + _result.join('&') : ''
+}
+
+export function translateBlob(res, fileName = '订单') {
+    // res就是返回回来的二进制内容
+    const blob = new Blob([res])
+    // 非IE下载
+    if ('download' in document.createElement('a')) {
+      const elink = document.createElement('a')
+      elink.download = `${fileName}.xls`
+      elink.style.display = 'none'
+      elink.href = URL.createObjectURL(blob)
+      document.body.appendChild(elink)
+      elink.click()
+      URL.revokeObjectURL(elink.href) // 释放URL 对象
+      document.body.removeChild(elink)
+    } else {
+      // IE10+下载
+      navigator.msSaveBlob(blob, fileName)
+    }
   }
